@@ -24,7 +24,7 @@ class Rsvp extends BaseController
         if (!isset($rsvpData['email'])) return json_encode(["message" => "Guest email is missing"]);
 
         try {
-            if($rsvp->save($rsvpData) > 1) {
+            if($rsvp->save($rsvpData) == 1) {
                 return json_encode([
                     "message" => "Hi " . ucwords($rsvpData['name']) . ", thank you for confirming your attendance! <br/>The couple will be sending an email as well, so stay tuned!"
                 ]);
