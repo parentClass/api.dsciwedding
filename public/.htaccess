@@ -9,7 +9,9 @@ Options -Indexes
 # FollowSymLinks must be enabled for this to work.
 <IfModule mod_rewrite.c>
 	Options +FollowSymlinks
-	RewriteEngine On
+	RewriteEngine on
+	RewriteCond %{REQUEST_URI} !^public
+	RewriteRule ^(.*)$ public/$1 [L]
 
 	# If you installed CodeIgniter in a subfolder, you will need to
 	# change the following line to match the subfolder you need.
