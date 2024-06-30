@@ -37,8 +37,8 @@ class Rsvp extends BaseController
                 "exception" => $e->getMessage()
             ]);
 
-            return json_encode([
-                "message" => "Failed saving the entry",
+            return $this->response->setStatusCode(400)->setJSON([
+                'message' => "Failed saving the entry",
                 "exception" => $e->getMessage()
             ]);
         }
