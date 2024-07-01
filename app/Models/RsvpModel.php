@@ -15,6 +15,7 @@ class RsvpModel extends Model
     protected $allowedFields    = [
         "name",
         "mobile",
+        "email",
         "message",
         "is_pasilungan_attending",
         "is_approved"

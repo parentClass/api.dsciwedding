@@ -9,6 +9,22 @@ use App\Models\ErrorModel;
 
 class Rsvp extends BaseController
 {
+
+    public function list() {
+        $rsvp = new RsvpModel();
+
+        try {
+            $response = $rsvp->findAll();
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(400)->setJSON([
+                'message' => "Failed retrieving rsvp list",
+                "exception" => $e->getMessage()
+            ]);
+        }
+
+        return json_encode($response);
+    }
+
     /**
      * save rsvp
      */
