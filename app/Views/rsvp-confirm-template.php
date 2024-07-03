@@ -123,7 +123,7 @@
                     </tbody>
                   </table>
                   <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">
-                    We have attached a soft copy of the invitation for your convenience. Please feel free to download it <a href="#!">here</a>, if you have any further questions or need assistance, please don't hesitate to contact us.
+                    We have attached a soft copy of the invitation for your convenience. Please feel free to download it <a href="https://api.dsciwedding.com/download/invitation" >here</a>, if you have any further questions or need assistance, please don't hesitate to contact us.
                   </p>
                   <p style="font-family: Helvetica, sans-serif; font-size: 16px; font-weight: normal; margin: 0; margin-bottom: 16px;">Best regards<br/>Daniel & Cherrylyn</p>
                   <p style="text-align:center;">
@@ -136,7 +136,7 @@
               </table>
 
             <!-- START FOOTER -->
-            <div class="footer" style="clear: both; padding-top: 24px; text-align: center; width: 100%;">
+            <!-- <div class="footer" style="clear: both; padding-top: 24px; text-align: center; width: 100%;">
               <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;" width="100%">
                 <tr>
                   <td class="content-block" style="font-family: Helvetica, sans-serif; vertical-align: top; color: #9a9ea6; font-size: 16px; text-align: center;" valign="top" align="center">
@@ -149,8 +149,7 @@
                   </td>
                 </tr>
               </table>
-            </div>
-
+            </div> -->
             <!-- END FOOTER -->
             
 <!-- END CENTERED WHITE CONTAINER --></div>

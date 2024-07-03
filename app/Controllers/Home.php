@@ -4,15 +4,8 @@ namespace App\Controllers;
 
 class Home extends BaseController
 {
-    public function index(): string
-    {
-        return view('welcome_message');
-    }
-
-    public function hello(): string
-    {
-        return json_encode([
-            "message" => "hello, world"
-        ]);
+    public function download() {
+        return $this->response->download('../public/invitation.pdf', null)
+            ->setFileName('daniel-and-cherrylyn-wedding-invitation.pdf');
     }
 }

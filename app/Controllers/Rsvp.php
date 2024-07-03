@@ -81,7 +81,8 @@ class Rsvp extends BaseController
 
             $rsvpEntry = $rsvp->where([
                 'id' => $rsvpData['id'], 
-                'email' => $rsvpData['email']
+                'email' => $rsvpData['email'],
+                'is_approved' => 0
             ])->find(1);
 
 
@@ -97,9 +98,25 @@ class Rsvp extends BaseController
 
                 $email->setMessage($template);
 
-                $e = $email->send();
+                if ($email->send()) {
+                    // change status of is approved
+                    $rsvpEntry['is_approved'] = true;
+                    // save entry
+                    $rsvp->save($rsvpEntry);
 
-                return json_encode(['mess' => $e]);
+                    return json_encode([
+                        'message' => 'Confirmation email has been sent!'
+                    ]);
+                } else {
+                    return $this->response->setStatusCode(400)->setJSON([
+                        'message' => "Failed sending confirmation email for approval",
+                        "exception" => $e->getMessage()
+                    ]);
+                }
+            } else {
+                return $this->response->setStatusCode(400)->setJSON([
+                    'message' => "Rsvp is either approved already or not existing"
+                ]);
             }
 
         } catch (\Exception $e) {
