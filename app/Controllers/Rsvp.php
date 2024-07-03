@@ -71,4 +71,49 @@ class Rsvp extends BaseController
         ]);
     }
     
+    public function approve() {
+        $rsvp = new RsvpModel();
+        $error = new ErrorModel();
+
+        $rsvpData = json_decode(json_encode($this->request->getJSON()), true);
+
+        try {
+
+            $rsvpEntry = $rsvp->where([
+                'id' => $rsvpData['id'], 
+                'email' => $rsvpData['email']
+            ])->find(1);
+
+
+            if ($rsvpEntry != null) {
+                $email = \Config\Services::email();
+
+                $email->setFrom('rsvp@dsciwedding.com', 'Daniel & Cherrylyn\'s Wedding');
+                $email->setTo($rsvpEntry['email']);
+
+                $email->setSubject('Confirmation');
+
+                $template = view("email-sample", ['guest_name' => ucwords($rsvpEntry['name'])]);
+
+                $email->setMessage($template);
+
+                $e = $email->send();
+
+                return json_encode(['mess' => $e]);
+            }
+
+        } catch (\Exception $e) {
+            // save to error entries
+            $error->save([
+                "entry" => "rsvp",
+                "message" => "Failed approving the rsvp, catched by exception",
+                "exception" => $e->getMessage()
+            ]);
+
+            return $this->response->setStatusCode(400)->setJSON([
+                'message' => "Failed approving the rsvp",
+                "exception" => $e->getMessage()
+            ]);
+        }
+    }
 }

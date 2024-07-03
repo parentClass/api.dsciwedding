@@ -11,3 +11,4 @@ $routes->get('/faqs/(:alpha)', 'Faq::faqLookupByCategory/$1', ['filter' => 'cors
 
 $routes->post('/rsvp', 'Rsvp::record', ['filter' => 'cors']);
 $routes->get('/rsvp/list', 'Rsvp::list', ['filter' => 'cors']);
+$routes->post('/rsvp/approve', 'Rsvp::approve', ['filter' => 'cors']);
