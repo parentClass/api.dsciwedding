@@ -93,7 +93,7 @@ class Rsvp extends BaseController
 
                 $email->setSubject('Confirmation');
 
-                $template = view("email-sample", ['guest_name' => ucwords($rsvpEntry['name'])]);
+                $template = view("rsvp-confirm-template", ['guest_name' => ucwords($rsvpEntry['name'])]);
 
                 $email->setMessage($template);
 
