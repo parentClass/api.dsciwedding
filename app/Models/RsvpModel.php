@@ -66,7 +66,7 @@ class RsvpModel extends Model
         }
 
         if (isset($params['data']['message'])) {
-            $params['data']['message'] = htmlspecialchars($params['data']['message']);
+            $params['data']['message'] = strip_tags($params['data']['message']);
         }
 
         return $params;
