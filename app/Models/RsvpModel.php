@@ -65,6 +65,10 @@ class RsvpModel extends Model
             }
         }
 
+        if (isset($params['data']['message'])) {
+            $params['data']['message'] = htmlspecialchars($params['data']['message']);
+        }
+
         return $params;
     }
 }
