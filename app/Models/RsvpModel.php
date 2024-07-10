@@ -66,7 +66,7 @@ class RsvpModel extends Model
         }
 
         if (isset($params['data']['message'])) {
-            $params['data']['message'] = strip_tags($params['data']['message']);
+            $params['data']['message'] = preg_replace('/\s+/', '<br/>', $params['data']['message']);
         }
 
         return $params;
