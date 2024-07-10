@@ -116,8 +116,7 @@ class Rsvp extends BaseController
                 'id' => $rsvpData['id'], 
                 'email' => $rsvpData['email'],
                 'is_approved' => 0
-            ])->find(1);
-
+            ])->first();
 
             if ($rsvpEntry != null) {
                 $email = \Config\Services::email();
@@ -133,9 +132,11 @@ class Rsvp extends BaseController
 
                 if ($email->send()) {
                     // change status of is approved
-                    $rsvpEntry['is_approved'] = true;
-                    // save entry
-                    $rsvp->save($rsvpEntry);
+                    $rsvp->where([
+                        'id' => $rsvpData['id'], 
+                        'email' => $rsvpData['email'],
+                        'is_approved' => 0
+                    ])->set(['is_approved' => true, 'updated_at' => date('Y-m-d H:i:s')])->update();
 
                     return json_encode([
                         'message' => 'Confirmation email has been sent!'
@@ -165,5 +166,9 @@ class Rsvp extends BaseController
                 "exception" => $e->getMessage()
             ]);
         }
+    }
+
+    public function decline() {
+        die(date('Y-m-d H:i:s'));
     }
 }
