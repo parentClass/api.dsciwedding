@@ -142,7 +142,7 @@ class Rsvp extends BaseController
                         'id' => $rsvpData['id'], 
                         'email' => $rsvpData['email'],
                         'is_approved' => false
-                    ])->set(['is_approved' => true, 'updated_at' => date('Y-m-d H:i:s')])->update();
+                    ])->set(['is_approved' => true, 'is_declined' => false, 'updated_at' => date('Y-m-d H:i:s')])->update();
 
                     return json_encode([
                         'message' => 'Confirmation email has been sent!'
@@ -195,7 +195,7 @@ class Rsvp extends BaseController
                 'email' => $rsvpData['email'],
                 'is_approved' => false,
                 'is_declined' => false
-            ])->set(['is_declined' => true, 'updated_at' => date('Y-m-d H:i:s')])->update();
+            ])->set(['is_approved' => false, 'is_declined' => true, 'updated_at' => date('Y-m-d H:i:s')])->update();
 
             return json_encode([
                 'message' => 'Rsvp has been successfuly declined!'
