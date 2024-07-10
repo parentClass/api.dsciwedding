@@ -19,7 +19,8 @@ class RsvpModel extends Model
         "message",
         "is_pasilungan_attending",
         "is_approved",
-        "is_declined"
+        "is_declined",
+        "updated_at"
     ];
 
     protected bool $allowEmptyInserts = false;
