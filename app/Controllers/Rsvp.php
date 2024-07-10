@@ -169,6 +169,44 @@ class Rsvp extends BaseController
     }
 
     public function decline() {
-        die(date('Y-m-d H:i:s'));
+        $rsvp = new RsvpModel();
+        $error = new ErrorModel();
+
+        $rsvpData = json_decode(json_encode($this->request->getJSON()), true);
+
+        try {
+
+            $rsvpEntry = $rsvp->where([
+                'id' => $rsvpData['id'], 
+                'email' => $rsvpData['email'],
+                'is_approved' => 0,
+                'is_declined' => 0
+            ])->first();
+
+            // change status of is approved
+            $rsvp->where([
+                'id' => $rsvpData['id'], 
+                'email' => $rsvpData['email'],
+                'is_approved' => 0,
+                'is_declined' => 0
+            ])->set(['is_declined' => true, 'updated_at' => date('Y-m-d H:i:s')])->update();
+
+            return json_encode([
+                'message' => 'Rsvp has been successfuly declined!'
+            ]);
+
+        } catch (\Exception $e) {
+            // save to error entries
+            $error->save([
+                "entry" => "rsvp",
+                "message" => "Failed declining the rsvp, catched by exception",
+                "exception" => $e->getMessage()
+            ]);
+
+            return $this->response->setStatusCode(400)->setJSON([
+                'message' => "Failed declining the rsvp",
+                "exception" => $e->getMessage()
+            ]);
+        }
     }
 }
