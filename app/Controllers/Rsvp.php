@@ -33,6 +33,7 @@ class Rsvp extends BaseController
             $formCount = count($response);
             $pasilunganAttendeesCount = 0;
             $approvedAttendeesCount = 0;
+            $declinedAttendeesCount = 0;
 
             foreach ($response as $key => $value) {
                 if($response[$key]["is_pasilungan_attending"] == 1) {
@@ -41,6 +42,10 @@ class Rsvp extends BaseController
 
                 if($response[$key]["is_approved"] == 1) {
                     $approvedAttendeesCount += 1;
+                }
+
+                if($response[$key]["is_declined"] == 1) {
+                    $declinedAttendeesCount += 1;
                 }
             }
 
@@ -54,7 +59,8 @@ class Rsvp extends BaseController
         return json_encode([
             "form_sent" => $formCount,
             "pasilungan_attendees" => $pasilunganAttendeesCount,
-            "approved_attendees" => $approvedAttendeesCount
+            "approved_attendees" => $approvedAttendeesCount,
+            "declined_attendees" => $declinedAttendeesCount
         ]);
     }
 
@@ -115,7 +121,7 @@ class Rsvp extends BaseController
             $rsvpEntry = $rsvp->where([
                 'id' => $rsvpData['id'], 
                 'email' => $rsvpData['email'],
-                'is_approved' => 0
+                'is_approved' => false
             ])->first();
 
             if ($rsvpEntry != null) {
@@ -135,7 +141,7 @@ class Rsvp extends BaseController
                     $rsvp->where([
                         'id' => $rsvpData['id'], 
                         'email' => $rsvpData['email'],
-                        'is_approved' => 0
+                        'is_approved' => false
                     ])->set(['is_approved' => true, 'updated_at' => date('Y-m-d H:i:s')])->update();
 
                     return json_encode([
@@ -187,8 +193,8 @@ class Rsvp extends BaseController
             $rsvp->where([
                 'id' => $rsvpData['id'], 
                 'email' => $rsvpData['email'],
-                'is_approved' => 0,
-                'is_declined' => 0
+                'is_approved' => false,
+                'is_declined' => false
             ])->set(['is_declined' => true, 'updated_at' => date('Y-m-d H:i:s')])->update();
 
             return json_encode([
