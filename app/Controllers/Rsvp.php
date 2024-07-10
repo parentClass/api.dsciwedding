@@ -14,7 +14,7 @@ class Rsvp extends BaseController
         $rsvp = new RsvpModel();
 
         try {
-            $response = $rsvp->findAll();
+            $response = $rsvp->orderBy('is_approved', 'asc')->findAll();
         } catch (\Exception $e) {
             return $this->response->setStatusCode(400)->setJSON([
                 'message' => "Failed retrieving rsvp list",
@@ -23,6 +23,39 @@ class Rsvp extends BaseController
         }
 
         return json_encode($response);
+    }
+
+    public function stats() {
+        $rsvp = new RsvpModel();
+
+        try {
+            $response = $rsvp->findAll();
+            $formCount = count($response);
+            $pasilunganAttendeesCount = 0;
+            $approvedAttendeesCount = 0;
+
+            foreach ($response as $key => $value) {
+                if($response[$key]["is_pasilungan_attending"] == 1) {
+                    $pasilunganAttendeesCount += 1;
+                }
+
+                if($response[$key]["is_approved"] == 1) {
+                    $approvedAttendeesCount += 1;
+                }
+            }
+
+        } catch (\Exception $e) {
+            return $this->response->setStatusCode(400)->setJSON([
+                'message' => "Failed retrieving rsvp stats",
+                "exception" => $e->getMessage()
+            ]);
+        }
+
+        return json_encode([
+            "form_sent" => $formCount,
+            "pasilungan_attendees" => $pasilunganAttendeesCount,
+            "approved_attendees" => $approvedAttendeesCount
+        ]);
     }
 
     /**
@@ -67,7 +100,7 @@ class Rsvp extends BaseController
         ]);
 
         return $this->response->setStatusCode(400)->setJSON([
-            'message' => 'Sorry, there seems to be a problem on saving your rsvp entry.<br/>Please try again or on another time'
+            'message' => 'Sorry, there seems to be a problem on saving your rsvp entry.<br/>Please try again using a different email or maybe on another time. thank you!'
         ]);
     }
     
