@@ -22,3 +22,4 @@ $routes->get('/download/invitation', 'Home::download', ['filter' => 'cors']);
 
 // gallery
 $routes->post('/gallery/upload', 'Gallery::upload', ['filter' => 'cors']);
+$routes->get('/gallery/list', 'Gallery::list', ['filter' => 'cors']);

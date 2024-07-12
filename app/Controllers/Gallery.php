@@ -9,7 +9,22 @@ use App\Models\GalleryModel;
 class Gallery extends BaseController
 {
     public function list() {
-        
+        $galleryModel = new GalleryModel();
+
+        $categorizedGallery = [
+          "ceremony" => [],
+          "reception" => [],
+          "afterparty" => []  
+        ];
+
+        $galleries = $galleryModel->orderBy('created_at', 'desc')->findAll();
+
+        foreach($galleries as $gallery) {
+            array_push($categorizedGallery[$gallery['category']], 
+                'https://api.dsciwedding.com/uploads/' . $gallery['category'] . '/' . $gallery['file_name']);
+        }
+
+        return json_encode($categorizedGallery);
     }
 
     public function upload() {
@@ -33,107 +48,60 @@ class Gallery extends BaseController
         $gallery = [];
 
         try {
+            $categories = ["ceremony", "reception", "afterparty"];
+
             // Handle file uploads
             $files = $this->request->getFiles();
-
-            if ($files['ceremony'][0]->getSize() > 0) {
-                foreach ($files['ceremony'] as $file) {
+            
+            foreach($categories as $category) {
+                foreach ($files[$category] as $file) {
                     $originalName = $file->getName();
-                    $uploadDir = FCPATH . 'uploads/ceremony';
-
-                    log_message('info', $uploadDir);
+                    
+                    if($file->getSize() > 0 && $file->getError() == 0) {
+                        $uploadDir = FCPATH . 'uploads/' . $category;
     
-                    // Check if the directory exists or create it if not
-                    if (!is_dir($uploadDir)) {
-                        mkdir($uploadDir, 0777, true);
-                    }
-    
-                    if ($file->isValid() && !$file->hasMoved()) {
-                        $fileName = $file->getRandomName();
-                        $uploadResult = $file->move($uploadDir, $fileName);
-    
-                        if($uploadResult == 1) {
-                            array_push($gallery, [
-                                "file_name" => $fileName,
-                                "path" => $uploadDir,
-                                "category" => "ceremony"
-                            ]);
-                            array_push($resp['ceremony']['success'], $originalName);
+                        // Check if the directory exists or create it if not
+                        if (!is_dir($uploadDir)) {
+                            mkdir($uploadDir, 0777, true);
+                        }
+        
+                        if ($file->isValid() && !$file->hasMoved()) {
+                            $fileName = $file->getRandomName();
+                            $uploadResult = $file->move($uploadDir, $fileName);
+        
+                            if($uploadResult == 1) {
+                                array_push($gallery, [
+                                    "file_name" => $fileName,
+                                    "path" => $uploadDir,
+                                    "category" => $category
+                                ]);
+                                array_push($resp[$category]['success'], $originalName);
+                            } else {
+                                array_push($resp[$category]['failed'], $originalName);
+                            }
                         } else {
-                            array_push($resp['ceremony']['failed'], $originalName);
+                            log_message('info', 'failed');
                         }
                     } else {
-                        log_message('info', 'failed');
+                        if ($file->getError() == 1) {
+                            array_push($resp[$category]['failed'], $originalName . ' => should be less than  10MB');
+                        }
                     }
                 }
             }
 
-            if ($files['reception'][0]->getSize() > 0) {
-                foreach ($files['reception'] as $file) {
-                    $originalName = $file->getName();
-                    $uploadDir = FCPATH . 'uploads/reception';
-    
-                    // Check if the directory exists or create it if not
-                    if (!is_dir($uploadDir)) {
-                        mkdir($uploadDir, 0777, true);
-                    }
-    
-                    if ($file->isValid() && !$file->hasMoved()) {
-                        $fileName = $file->getRandomName();
-                        $uploadResult = $file->move($uploadDir, $fileName);
-    
-                        if($uploadResult == 1) {
-                            array_push($gallery, [
-                                "file_name" => $fileName,
-                                "path" => $uploadDir,
-                                "category" => "reception"
-                            ]);
-                            array_push($resp['reception']['success'], $originalName);
-                        } else {
-                            array_push($resp['reception']['failed'], $originalName);
-                        }
-                    } else {
-                        log_message('info', 'failed');
-                    }
-                }
+            // should only insert to db if gallery has values
+            if($gallery != null) {
+                // insert to db
+                $galleryModel->insertBatch($gallery);
             }
-
-            if ($files['afterparty'][0]->getSize() > 0) {
-                foreach ($files['afterparty'] as $file) {
-                    $originalName = $file->getName();
-                    $uploadDir = FCPATH . 'uploads/afterparty';
-    
-                    // Check if the directory exists or create it if not
-                    if (!is_dir($uploadDir)) {
-                        mkdir($uploadDir, 0777, true);
-                    }
-    
-                    if ($file->isValid() && !$file->hasMoved()) {
-                        $fileName = $file->getRandomName();
-                        $uploadResult = $file->move($uploadDir, $fileName);
-    
-                        if($uploadResult == 1) {
-                            array_push($gallery, [
-                                "file_name" => $fileName,
-                                "path" => $uploadDir,
-                                "category" => "afterparty"
-                            ]);
-                            array_push($resp['afterparty']['success'], $originalName);
-                        } else {
-                            array_push($resp['afterparty']['failed'], $originalName);
-                        }
-                    } else {
-                        log_message('info', 'failed');
-                    }
-                }
-            }
-
-            // insert to db
-            $galleryModel->insertBatch($gallery);
 
             return json_encode($resp);
         } catch (\Exception $e) {
-            log_message('error', $e->getMessage());
+            return $this->response->setStatusCode(400)->setJSON([
+                'message' => 'Sorry, there seems to be a problem on uploading your image.',
+                'exception' => $e->getMessage()
+            ]);
         }
     }
 }
