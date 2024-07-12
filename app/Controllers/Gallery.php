@@ -39,7 +39,7 @@ class Gallery extends BaseController
             if ($files['ceremony'][0]->getSize() > 0) {
                 foreach ($files['ceremony'] as $file) {
                     $originalName = $file->getName();
-                    $uploadDir = FCPATH . 'uploads\ceremony';
+                    $uploadDir = FCPATH . 'uploads/ceremony';
 
                     log_message('info', $uploadDir);
     
@@ -71,7 +71,7 @@ class Gallery extends BaseController
             if ($files['reception'][0]->getSize() > 0) {
                 foreach ($files['reception'] as $file) {
                     $originalName = $file->getName();
-                    $uploadDir = FCPATH . 'uploads\reception';
+                    $uploadDir = FCPATH . 'uploads/reception';
     
                     // Check if the directory exists or create it if not
                     if (!is_dir($uploadDir)) {
@@ -101,7 +101,7 @@ class Gallery extends BaseController
             if ($files['afterparty'][0]->getSize() > 0) {
                 foreach ($files['afterparty'] as $file) {
                     $originalName = $file->getName();
-                    $uploadDir = FCPATH . 'uploads\afterparty';
+                    $uploadDir = FCPATH . 'uploads/afterparty';
     
                     // Check if the directory exists or create it if not
                     if (!is_dir($uploadDir)) {
