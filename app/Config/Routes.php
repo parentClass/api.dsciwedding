@@ -19,3 +19,6 @@ $routes->post('/rsvp/decline', 'Rsvp::decline', ['filter' => 'cors']);
 
 // invitation
 $routes->get('/download/invitation', 'Home::download', ['filter' => 'cors']);
+
+// gallery
+$routes->post('/gallery/upload', 'Gallery::upload', ['filter' => 'cors']);
