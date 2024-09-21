@@ -36,13 +36,8 @@
             font-size: 12px;
             color: #777777;
         }
-        .highlight {
-            color: #F1D3CA; /* Blush Pink */
-            font-weight: bold;
-        }
         .qr-code {
             text-align: center;
-            margin: 20px 0;
         }
     </style>
 </head>
@@ -63,7 +58,7 @@
                 <li>Outfit: Formal/Semi-formal</li>
                 <li>Motif: Midnight Blue or Blush Pink</li>
             </ul>
-            <p class="highlight">Looking forward to seeing you!</p>
+            <p>Looking forward to seeing you!</p>
         </div>
         <div class="qr-code">
             <img src="https://api.dsciwedding.com/uploads/qr-code.png" alt="QR Code" width="150" height="150">
