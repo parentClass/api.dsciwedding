@@ -11,17 +11,12 @@ class Gallery extends BaseController
     public function list() {
         $galleryModel = new GalleryModel();
 
-        $categorizedGallery = [
-          "ceremony" => [],
-          "reception" => [],
-          "afterparty" => []  
-        ];
+        $gallery = [];
 
         $galleries = $galleryModel->orderBy('created_at', 'desc')->findAll();
 
         foreach($galleries as $gallery) {
-            array_push($categorizedGallery[$gallery['category']], 
-                'https://api.dsciwedding.com/uploads/' . $gallery['category'] . '/' . $gallery['file_name']);
+            array_push(gallery, 'https://api.dsciwedding.com/uploads/wedding/' . $gallery['file_name']);
         }
 
         return json_encode($categorizedGallery);
@@ -31,15 +26,7 @@ class Gallery extends BaseController
         $galleryModel = new GalleryModel();
 
         $resp = [
-            "ceremony" => [
-                "success" => [],
-                "failed" => []
-            ],
-            "reception" => [
-                "success" => [],
-                "failed" => []
-            ],
-            "afterparty" => [
+            "wedding" => [
                 "success" => [],
                 "failed" => []
             ]
@@ -48,44 +35,40 @@ class Gallery extends BaseController
         $gallery = [];
 
         try {
-            $categories = ["ceremony", "reception", "afterparty"];
-
             // Handle file uploads
             $files = $this->request->getFiles();
             
-            foreach($categories as $category) {
-                foreach ($files[$category] as $file) {
-                    $originalName = $file->getName();
-                    
-                    if($file->getSize() > 0 && $file->getError() == 0) {
-                        $uploadDir = FCPATH . 'uploads/' . $category;
+            foreach ($files['wedding'] as $file) {
+                $originalName = $file->getName();
+                
+                if($file->getSize() > 0 && $file->getError() == 0) {
+                    $uploadDir = FCPATH . 'uploads/wedding';
+
+                    // Check if the directory exists or create it if not
+                    if (!is_dir($uploadDir)) {
+                        mkdir($uploadDir, 0777, true);
+                    }
     
-                        // Check if the directory exists or create it if not
-                        if (!is_dir($uploadDir)) {
-                            mkdir($uploadDir, 0777, true);
-                        }
-        
-                        if ($file->isValid() && !$file->hasMoved()) {
-                            $fileName = $file->getRandomName();
-                            $uploadResult = $file->move($uploadDir, $fileName);
-        
-                            if($uploadResult == 1) {
-                                array_push($gallery, [
-                                    "file_name" => $fileName,
-                                    "path" => $uploadDir,
-                                    "category" => $category
-                                ]);
-                                array_push($resp[$category]['success'], $originalName);
-                            } else {
-                                array_push($resp[$category]['failed'], $originalName);
-                            }
+                    if ($file->isValid() && !$file->hasMoved()) {
+                        $fileName = $file->getRandomName();
+                        $uploadResult = $file->move($uploadDir, $fileName);
+    
+                        if($uploadResult == 1) {
+                            array_push($gallery, [
+                                "file_name" => $fileName,
+                                "path" => $uploadDir,
+                                "category" => 'wedding'
+                            ]);
+                            array_push($resp['wedding']['success'], $originalName);
                         } else {
-                            log_message('info', 'failed');
+                            array_push($resp['wedding']['failed'], $originalName);
                         }
                     } else {
-                        if ($file->getError() == 1) {
-                            array_push($resp[$category]['failed'], $originalName . ' => should be less than  10MB');
-                        }
+                        log_message('info', 'failed');
+                    }
+                } else {
+                    if ($file->getError() == 1) {
+                        array_push($resp['wedding']['failed'], $originalName . ' => should be less than  10MB');
                     }
                 }
             }
