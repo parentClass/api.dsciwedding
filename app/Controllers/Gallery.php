@@ -19,7 +19,7 @@ class Gallery extends BaseController
             array_push(gallery, 'https://api.dsciwedding.com/uploads/wedding/' . $gallery['file_name']);
         }
 
-        return json_encode($categorizedGallery);
+        return json_encode($gallery);
     }
 
     public function upload() {
