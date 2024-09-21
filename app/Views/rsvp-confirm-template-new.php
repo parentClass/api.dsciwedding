@@ -20,7 +20,7 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         .header {
-            background-color: #1a1a78; /* Midnight Blue */
+            background-color: #07072d; /* Midnight Blue */
             color: #ffffff;
             padding: 20px;
             text-align: center;
@@ -37,7 +37,7 @@
             color: #777777;
         }
         .highlight {
-            color: #f49ac2; /* Blush Pink */
+            color: #F1D3CA; /* Blush Pink */
             font-weight: bold;
         }
     </style>
@@ -51,6 +51,17 @@
             <p>Dear <?php echo $guest_name; ?>,</p>
             <p>We are thrilled to inform you that your RSVP has been confirmed!</p>
             <p>As Daniel &amp; Cherrylyn embark on this exciting new chapter of their lives, they are overjoyed to have you with them to celebrate this special occasion.</p>
+            <br/>
+            <p>Here are some of the quick guide (what, when & where)</p>
+            <ul>
+                <li>What? Daniel &amp; Cherrylyn Wedding</li>
+                <li>When? January 11, 2025 @ 2:00 PM PHT</li>
+                <li>Where? <a href="https://maps.app.goo.gl/yWZbxifuyx813puR6">Kamay Ni Hesus Healing Church</a></li>
+                <li>Outfit? Formal/Semi-formal</li>
+                <li>Motif? Midnight Blue or Blush Pink</li>
+            </ul>
+            <br/>
+            <p>We encourage you to have a quick glance to our <a href="https://dsciwedding.com">website</a> which contains full information.</p>
             <p>Thank you for being a part of their journey!</p>
             <p class="highlight">Looking forward to seeing you!</p>
         </div>
