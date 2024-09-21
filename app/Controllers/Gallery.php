@@ -9,17 +9,18 @@ use App\Models\GalleryModel;
 class Gallery extends BaseController
 {
     public function list() {
+        $orderedGallery = [];
         $galleryModel = new GalleryModel();
 
-        $gallery = [];
-
+        // retrieve gallery ordered by created_at
         $galleries = $galleryModel->orderBy('created_at', 'desc')->findAll();
 
+        // loop through records and add actual path
         foreach($galleries as $gallery) {
-            array_push(gallery, 'https://api.dsciwedding.com/uploads/wedding/' . $gallery['file_name']);
+            array_push($orderedGallery, 'https://api.dsciwedding.com/uploads/wedding/' . $gallery['file_name']);
         }
 
-        return json_encode($gallery);
+        return json_encode($orderedGallery);
     }
 
     public function upload() {
