@@ -20,15 +20,8 @@ class Gallery extends BaseController
         $galleries = $galleryModel->orderBy('created_at', 'desc')->findAll();
 
         foreach($galleries as $gallery) {
-            $category = $gallery['category'];
-            $fileName = $gallery['file_name'];
-
-            $img = 'https://api.dsciwedding.com/uploads/' . $category . '/' . $fileName;
-
-            array_push($categorizedGallery[$category], [
-                "src" => $img,
-                "thumbnail" => $this->generateThumbnail(FCPATH . 'uploads/' . $category . $fileName, 100, 50, 65)
-            ]);
+            array_push($categorizedGallery[$gallery['category']], 
+                'https://api.dsciwedding.com/uploads/' . $gallery['category'] . '/' . $gallery['file_name']);
         }
 
         return json_encode($categorizedGallery);
@@ -109,26 +102,6 @@ class Gallery extends BaseController
                 'message' => 'Sorry, there seems to be a problem on uploading your image.',
                 'exception' => $e->getMessage()
             ]);
-        }
-    }
-
-    private function generateThumbnail($img, $width, $height, $quality = 90) {
-        die($img);
-        if (is_file($img)) {
-            $imagick = new Imagick(realpath($img));
-            $imagick->setImageFormat('jpeg');
-            $imagick->setImageCompression(Imagick::COMPRESSION_JPEG);
-            $imagick->setImageCompressionQuality($quality);
-            $imagick->thumbnailImage($width, $height, false, false);
-            $filename_no_ext = reset(explode('.', $img));
-
-            if (file_put_contents($filename_no_ext . '_thumb' . '.jpg', $imagick) === false) {
-                throw new Exception("Could not put contents.");
-            }
-
-            return true;
-        } else {
-            throw new Exception("No valid image provided with {$img}.");
         }
     }
 }
