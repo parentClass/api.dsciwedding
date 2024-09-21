@@ -113,6 +113,7 @@ class Gallery extends BaseController
     }
 
     private function generateThumbnail($img, $width, $height, $quality = 90) {
+        die($img);
         if (is_file($img)) {
             $imagick = new Imagick(realpath($img));
             $imagick->setImageFormat('jpeg');
