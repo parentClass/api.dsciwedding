@@ -20,11 +20,14 @@ class Gallery extends BaseController
         $galleries = $galleryModel->orderBy('created_at', 'desc')->findAll();
 
         foreach($galleries as $gallery) {
-            $img = 'https://api.dsciwedding.com/uploads/' . $gallery['category'] . '/' . $gallery['file_name'];
+            $category = $gallery['category'];
+            $fileName = $gallery['file_name'];
 
-            array_push($categorizedGallery[$gallery['category']], [
+            $img = 'https://api.dsciwedding.com/uploads/' . $category . '/' . $fileName;
+
+            array_push($categorizedGallery[$category], [
                 "src" => $img,
-                "thumbnail" => $this->generateThumbnail($img, 100, 50, 65)
+                "thumbnail" => $this->generateThumbnail(FCPATH . 'uploads/' . $category . $fileName, 100, 50, 65)
             ]);
         }
 
