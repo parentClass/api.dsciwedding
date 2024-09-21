@@ -40,6 +40,10 @@
             color: #F1D3CA; /* Blush Pink */
             font-weight: bold;
         }
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -51,19 +55,19 @@
             <p>Dear <?php echo $guest_name; ?>,</p>
             <p>We are thrilled to inform you that your RSVP has been confirmed!</p>
             <p>As Daniel &amp; Cherrylyn embark on this exciting new chapter of their lives, they are overjoyed to have you with them to celebrate this special occasion.</p>
-            <br/>
             <p>Here are some of the quick guide (what, when & where)</p>
             <ul>
-                <li>What? Daniel &amp; Cherrylyn Wedding</li>
-                <li>When? January 11, 2025 @ 2:00 PM PHT</li>
-                <li>Where? <a href="https://maps.app.goo.gl/yWZbxifuyx813puR6">Kamay Ni Hesus Healing Church</a></li>
-                <li>Outfit? Formal/Semi-formal</li>
-                <li>Motif? Midnight Blue or Blush Pink</li>
+                <li>What: Daniel &amp; Cherrylyn Wedding</li>
+                <li>When: January 11, 2025 @ 2:00 PM PHT</li>
+                <li>Where: <a href="https://maps.app.goo.gl/yWZbxifuyx813puR6">Kamay Ni Hesus Healing Church</a></li>
+                <li>Outfit: Formal/Semi-formal</li>
+                <li>Motif: Midnight Blue or Blush Pink</li>
             </ul>
-            <br/>
-            <p>We encourage you to have a quick glance to our <a href="https://dsciwedding.com">website</a> which contains full information.</p>
-            <p>Thank you for being a part of their journey!</p>
             <p class="highlight">Looking forward to seeing you!</p>
+        </div>
+        <div class="qr-code">
+            <img src="https://api.dsciwedding.com/uploads/qr-code.png" alt="QR Code" width="150" height="150">
+            <p>Scan the QR code to visit our website for more info!</p>
         </div>
         <div class="footer">
             <p>&copy; 2024 Daniel &amp; Cherrylyn. All rights reserved.</p>
