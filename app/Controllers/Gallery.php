@@ -24,7 +24,7 @@ class Gallery extends BaseController
 
             array_push($categorizedGallery[$gallery['category']], [
                 "src" => $img,
-                "thumbnail" => generateThumbnail($img, 100, 50, 65)
+                "thumbnail" => $this->generateThumbnail($img, 100, 50, 65)
             ]);
         }
 
